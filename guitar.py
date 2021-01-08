@@ -43,7 +43,7 @@ class Chord(object):
 
         if self._post > 0:
             self._post -= 1
-            return self._post
+            return self._post + 1
 
     def finished(self):
         return False if self._pre + self._duration + self._post > 0 else True
@@ -132,10 +132,13 @@ def main():
                 return
 
             if event.type == EVT_TICK:
-                if not chord or chord.finished():
-                    chord = Chord(chord_list.popleft())
+                try:
+                    if not chord or chord.finished():
+                        chord = Chord(chord_list.popleft())
 
-                process_tick(chord, screen, fonts, bg)
+                    process_tick(chord, screen, fonts, bg)
+                except IndexError:
+                    return
 
 
 if __name__ == "__main__":
